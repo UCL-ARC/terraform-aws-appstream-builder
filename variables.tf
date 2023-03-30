@@ -15,7 +15,7 @@ variable "starter_image_name" {
 
 variable "builder_instance_type" {
   type    = string
-  default = "stream.standard.medium"  
+  default = "stream.standard.medium"
 }
 
 variable "vpc_id" {
