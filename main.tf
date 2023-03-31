@@ -32,7 +32,8 @@ module "bucket" {
 }
 
 module "template_files" {
-  source = "hashicorp/dir/template"
+  source  = "hashicorp/dir/template"
+  version = "1.0.2"
 
   base_dir = "${path.root}/assets/INSTALL"
 
@@ -73,7 +74,7 @@ resource "aws_appstream_image_builder" "image_builder" {
   display_name                   = "Base image builder"
   enable_default_internet_access = false
   image_name                     = var.starter_image_name
-  instance_type                  = "stream.standard.medium"
+  instance_type                  = var.builder_instance_type
 
   vpc_config {
     subnet_ids = [data.aws_subnets.selected.ids[0]]
@@ -92,7 +93,7 @@ resource "aws_cloudformation_stack" "pipeline" {
 
   name = var.pipeline_name
 
-  template_body = file("./assets/AS2-Automation-Linux-CloudFormation.yaml")
+  template_body = local.deploy_pipeline == 1 ? file("./assets/AS2-Automation-Linux-CloudFormation.yaml") : ""
 
   parameters = {
     AS2DefaultImage              = var.default_image_name,
