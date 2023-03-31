@@ -2,11 +2,11 @@
 
 provider "aws" {
   region  = "eu-west-2"
-  profile = "AWSAdministratorAccess-823410123869"
 }
 
 locals {
-  s3_bucket_name = "${var.bucket_name}-${random_id.id.hex}"
+  s3_bucket_name  = "${var.bucket_name}-${random_id.id.hex}"
+  deploy_pipeline = var.image_private_key == "" ? 0 : 1
 }
 
 resource "random_id" "id" {
@@ -79,3 +79,31 @@ resource "aws_appstream_image_builder" "image_builder" {
     subnet_ids = [data.aws_subnets.selected.ids[0]]
   }
 }
+
+resource "aws_ssm_parameter" "as2_key" {
+  count = local.deploy_pipeline
+  name  = "/as2_automation/sshkey"
+  type  = "SecureString"
+  value = var.image_private_key
+}
+
+resource "aws_cloudformation_stack" "pipeline" {
+  count = local.deploy_pipeline
+
+  name = var.pipeline_name
+
+  template_body = file("./assets/AS2-Automation-Linux-CloudFormation.yaml")
+
+  parameters = {
+    AS2DefaultImage              = var.default_image_name,
+    AS2DefaultSSHKeyARN          = aws_ssm_parameter.as2_key[0].arn,
+    AS2VPCId                     = var.vpc_id,
+    AS2VPCSubnet1                = data.aws_subnets.selected.ids[0],
+    AS2VPCSubnet2                = data.aws_subnets.selected.ids[1],
+    SNSEmailSubscriptionEndPoint = var.notification_email,
+    SourceS3Bucket               = module.bucket.s3_bucket_id
+  }
+
+  capabilities = ["CAPABILITY_NAMED_IAM"]
+}
+
