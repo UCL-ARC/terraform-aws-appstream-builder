@@ -11,20 +11,21 @@ Create an AppStream Image Builder instance.
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.1.4 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.51.0 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | ~> 3.4.3 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 4.51.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | n/a |
+| <a name="provider_random"></a> [random](#provider\_random) | ~> 3.4.3 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_bucket"></a> [bucket](#module\_bucket) | terraform-aws-modules/s3-bucket/aws | 3.6.1 |
-| <a name="module_template_files"></a> [template\_files](#module\_template\_files) | hashicorp/dir/template | n/a |
+| <a name="module_template_files"></a> [template\_files](#module\_template\_files) | hashicorp/dir/template | 1.0.2 |
 
 ## Resources
 
