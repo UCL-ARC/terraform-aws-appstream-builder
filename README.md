@@ -2,12 +2,12 @@
 
 ⚠️ This repository is still under construction! ⚠️
 
-A Terraform instantiation of the CloudFormation workflow from blog post: 
+A Terraform instantiation of the CloudFormation workflow from blog post:
 [Automatically create customized AppStream 2.0 Linux images](https://aws.amazon.com/blogs/desktop-and-application-streaming/automatically-create-customized-appstream-2-0-linux-images/).
 
 ## Usage
 
-_TODO_
+### TODO
 
 This does not run from end-to-end (yet?) due to manual steps required to configure
 the base image builder.
